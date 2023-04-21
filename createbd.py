@@ -102,16 +102,22 @@ class work_bd():
             response_from = []
             for row in mobile_records:
                 response_from.append(row[0])
+
+            
             #print(response_from)
 
 
             cursor.close()
             connection.close()
+            
+            return response_from
+
+
 
         except OperationalError as e:
             print(f"The error '{e}' occurred")
         finally:
-            response_from = []
+            response_from
 
 
 
@@ -121,4 +127,4 @@ class work_bd():
 
 #create_table()
 #work_bd.to_bd(21089859 , 111111)
-#work_bd.from_bd(21089859 , 722675699)
+#work_bd.from_bd(21089859 , 793720688)

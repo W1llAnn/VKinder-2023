@@ -31,7 +31,7 @@ class VkTools():
                                     'age_from': age_from,
                                     'age_to': age_to,
                                     'sex': sex,
-                                    'count': 100,
+                                    'count': 10,
                                     'status': 6,
                                     'offset': offset,
                                     'sort': 1
@@ -98,5 +98,5 @@ if __name__ == '__main__':
     #profiles = tools.users_search('москва', 20, 25, 2)
     #print(profiles)
 
-    #photos = tools.photos_get(679141813)
-    #print(photos)
+    photos = tools.photos_get(679141813)
+    print(photos)

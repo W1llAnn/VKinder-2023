@@ -66,9 +66,6 @@ class BotInterfase:
                     else:
                         self.message_send(user_id=event.user_id, message='Неверно указан пол, попробуйте еще раз')
                         break
-                    #sex = int(sex)
-
-                    #print(type(sex))
 
 
                     # Возраст
@@ -86,69 +83,59 @@ class BotInterfase:
                         break
                     else:
                         age_to=int(age_to)
-                    #print(type(age_to))
+
                     
                     # Город
                     max_len_resp = len(response)
                     city = str(response[14:max_len_resp].lower())  
 
-
-
                     # TEST
                     #self.message_send(user_id=event.user_id, message = f' Тест: ' + str(sex) + ' ' + str(age_from) + ' ' + str(age_to) + ' ' + str(city))
 
-
-
                     # Поиск анкет 
                     VkTools.result = tools.users_search(city, age_from, age_to, sex)
-                    #print(VkTools.result[0]['id'])
+
                     work_bd.create_table()
 
-                    
-
-                    for i in range(2):
 
 
-                        
-                        response_from = work_bd.from_bd(event.user_id, dating_user)
-                        dating_user = str(VkTools.result[i]['id'])
-                        
-                        print(response_from)
-                        print(type(response_from))
-                        print(dating_user)
-                        print(type(dating_user))
+                    def worksheet(dat_user):
+                       
+                        sorted_user_photo = tools.photos_get(dat_user)
+                        #print(sorted_user_photo)
 
-                        if dating_user not in response_from:
-                            
-                        
-                            self.message_send(user_id=event.user_id, message=f'\n {VkTools.result[i]}')
-
-                            
-                            sorted_user_photo = tools.photos_get(VkTools.result[i]['id'])
-                            print(sorted_user_photo)
-
-
-                            try:
-                                self.message_send(user_id, f'фото:', 
+                        try:
+                            self.message_send(event.user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото:', 
                                                     attachment=','.join
                                                     ([sorted_user_photo[0][1], sorted_user_photo[1][1],
                                                     sorted_user_photo[2][1]]))
 
-
-                            except IndexError:
-                                for photo in range(len(sorted_user_photo)):
-                                    self.message_send(user_id, f'фото:',
-                                        attachment=sorted_user_photo[photo][0])
-
-
-
-                            # Делаем запись в БД               worksheet_id это найденые анкеты
-                            #work_bd.to_bd(event.user_id, VkTools.result[i]['id'])
-
+                        except IndexError:
                             
-                        else:
-                            dating_user = VkTools.result[i+1]['id']
+                                self.message_send(event.user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото:',
+                                                attachment=sorted_user_photo[0][1])
+                        
+                        # Делаем запись в БД               worksheet_id это найденые анкеты
+                        work_bd.to_bd(event.user_id, dat_user)
 
+
+                                  
+                    for i in range(len(VkTools.result)):
+
+                        dating_user = int(VkTools.result[i]['id'])
+                        response = work_bd.from_bd(event.user_id, dating_user)
+
+
+                        if dating_user not in response:
+                            dat_user = str(VkTools.result[i]['id'])
+                            name_dat_user = str(VkTools.result[i]['name'])
+                            link_dat_user = str('https://vk.com/id'+dat_user)
+                            worksheet(dat_user)
+                            break
+                        else:
+                            pass
+
+                        
 
 
                 else:
@@ -166,9 +153,3 @@ if __name__ == '__main__':
         BotInterfase.handler(bot)
         
     
-
-
-
-
-        
-
