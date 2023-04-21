@@ -98,5 +98,5 @@ if __name__ == '__main__':
     #profiles = tools.users_search('москва', 20, 25, 2)
     #print(profiles)
 
-    photos = tools.photos_get(679141813)
-    print(photos)
+    #photos = tools.photos_get(679141813)
+    #print(photos)
