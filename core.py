@@ -31,7 +31,7 @@ class VkTools():
                                     'age_from': age_from,
                                     'age_to': age_to,
                                     'sex': sex,
-                                    'count': 10,
+                                    'count': 100,
                                     'status': 6,
                                     'offset': offset,
                                     'sort': 1
@@ -84,19 +84,5 @@ class VkTools():
             if element != ['нет фото.'] and users_photos != 'нет доступа к фото':
                 sort_result.append(element)
         return sorted(sort_result, reverse=True)
-      
-
-
-        
     
 
-
-if __name__ == '__main__':
-    tools = VkTools(acces_token)
-    
-
-    #profiles = tools.users_search('москва', 20, 25, 2)
-    #print(profiles)
-
-    #photos = tools.photos_get(679141813)
-    #print(photos)
