@@ -5,7 +5,7 @@ from config import user_db, password_db
 class work_bd():
 
     @staticmethod
-    def __init__():
+    def connect():
         try:
             connection = None
             # Подключение к существующей базе данных
@@ -23,7 +23,7 @@ class work_bd():
 
     def create_table():
         try:
-            connection = work_bd.__init__()
+            connection = work_bd.connect()
             cursor = connection.cursor()
 
 
@@ -43,7 +43,7 @@ class work_bd():
     #добавление в БД
     def to_bd(profile_id, worksheet_id):
         try:
-            connection = work_bd.__init__()
+            connection = work_bd.connect()
             cursor = connection.cursor()
         
             view = (profile_id, worksheet_id)
@@ -62,7 +62,7 @@ class work_bd():
     #извлечение из БД
     def from_bd(user_id):
         try:
-            connection = work_bd.__init__()
+            connection = work_bd.connect()
             cursor = connection.cursor()
             postgresql_select_query = "select worksheet_id from viewed where profile_id = %s"
             cursor.execute(postgresql_select_query, (user_id,))

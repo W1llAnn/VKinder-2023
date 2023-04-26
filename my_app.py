@@ -28,33 +28,15 @@ class BotInterfase:
 
     def worksheet(self,user_id, dat_user, name_dat_user, link_dat_user):
         sorted_user_photo = tools.photos_get(dat_user)
-        #print(sorted_user_photo)
-
-
-        sort_user_photo = []
-        for photo in sorted_user_photo[:3]:
-            sort_user_photo.append(photo) 
-        #print(sort_user_photo)
-
-
-        if sort_user_photo == []:
+        if sorted_user_photo == []:
             self.message_send(user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото: отсутствует')
-        elif len(sort_user_photo) == 1:
-            self.message_send(user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото:', 
-                                                    attachment=','.join
-                                                    ([sort_user_photo[0][1]]))
-        elif len(sort_user_photo) == 2:
-            self.message_send(user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото:', 
-                                                    attachment=','.join
-                                                    ([sort_user_photo[0][1], sort_user_photo[1][1]]))
-
         else:
             self.message_send(user_id, f'\n {name_dat_user}, ссылка на профиль: {link_dat_user} фото:', 
                                                     attachment=','.join
-                                                    ([sort_user_photo[0][1], sort_user_photo[1][1],
-                                                    sort_user_photo[2][1]]))
-   
+                                                    ([user_photo[1] for user_photo in sorted_user_photo[:3]]))
 
+
+   
 
     def selection(self, user_id, response):
         response_spl = response.split()
@@ -112,11 +94,12 @@ class BotInterfase:
         
     def handler(self):
         longpoll = VkLongPoll(self.bot)
+        resp = ''
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 response = str(event.from_user and event.to_me and event.text).lower()
                 user_id=event.user_id
-
+                
                 if len(response) < 10 and response =='привет':
                     self.message_send(user_id=event.user_id, message='Приветствую! Напишите "Поиск" чтобы начать')
                 
@@ -127,8 +110,13 @@ class BotInterfase:
                 
 
                 elif len(response) > 10:
-                    self.selection(user_id, response)
+                    resp = response
+                    self.selection(user_id, resp)
                     
+                
+                elif len(response) < 10 and response == 'далее':
+                    self.selection(user_id, resp)
+                       
 
                 else:
                     self.message_send(user_id=event.user_id, message='Неверная команда. Напишите "Привет" чтобы начать.')
@@ -139,11 +127,7 @@ class BotInterfase:
 
 
 if __name__ == '__main__':
-    
-        tools = VkTools(acces_token)
-        bot = BotInterfase(comunity_token)
+    tools = VkTools(acces_token)
+    bot = BotInterfase(comunity_token)
         
-        
-        BotInterfase.handler(bot)
-        
-    
+    BotInterfase.handler(bot)

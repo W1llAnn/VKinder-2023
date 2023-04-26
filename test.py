@@ -10,7 +10,7 @@ from config import comunity_token, acces_token
 #work_bd.create_table()
 #work_bd.to_bd(21089859 , 111111)
 #work_bd.from_bd(21089859)
-
+print(work_bd.from_bd(21089859))
 # VkTools
 
 
@@ -25,10 +25,3 @@ from config import comunity_token, acces_token
     #print(photos)
 
 
-
-a = [12, 3.85, "black", -4]
-print(a[0:3])
-
-
-b = [12, 3.85]
-print(b[0:3])
