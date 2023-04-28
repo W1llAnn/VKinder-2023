@@ -115,7 +115,10 @@ class BotInterfase:
                     
                 
                 elif len(response) < 10 and response == 'далее':
-                    self.selection(user_id, resp)
+                    if len(resp) < 10:
+                        self.message_send(user_id=event.user_id, message='Неверная команда. Напишите "Привет" чтобы начать.')
+                    else:
+                        self.selection(user_id, resp)
                        
 
                 else:
